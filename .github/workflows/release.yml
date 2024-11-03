@@ -1,0 +1,49 @@
+on:
+  push:
+    branches: main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: moonrepo/setup-rust@v1
+        with:
+          cache: false
+
+      - id: build
+        uses: moonrepo/build-wasm-plugin@v0
+
+      - name: Semver
+        id: semver
+        uses: oknozor/cocogitto-action@v3
+        with:
+          release: true
+          git-user: 'Bot'
+          git-user-email: 'proto-plugin-poetry@localhost'
+
+      - name: Changelog generate
+        id: changelog
+        run: |
+          cog changelog --at ${{ steps.semver.outputs.version }} -t full_hash > CHANGELOG.md
+          echo "changelog=$(cat CHANGELOG.md)" >> "$GITHUB_OUTPUT"
+        shell: bash
+  
+        
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: builds/*
+          artifactErrorsFailBuild: true
+          body: ${{ steps.changelog.outputs.changelog }}
+          tag: v${{ steps.semver.outputs.version }}
+          makeLatest: true
+          prerelease: false
+          skipIfReleaseExists: false
