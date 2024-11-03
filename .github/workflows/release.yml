@@ -26,24 +26,22 @@ jobs:
         uses: oknozor/cocogitto-action@v3
         with:
           release: true
-          git-user: 'Bot'
-          git-user-email: 'proto-plugin-poetry@localhost'
+          git-user: "Bot"
+          git-user-email: "proto-plugin-poetry@localhost"
 
       - name: Changelog generate
         id: changelog
         run: |
-          cog changelog --at ${{ steps.semver.outputs.version }} -t full_hash > CHANGELOG.md
-          echo "changelog=$(cat CHANGELOG.md)" >> "$GITHUB_OUTPUT"
+          cog changelog --at ${{ steps.semver.outputs.version }} -t full_hash > GITHUB_CHANGELOG.md
         shell: bash
-  
-        
-      - name: Release
-        uses: ncipollo/release-action@v1
+
+      - name: Upload github release
+        uses: softprops/action-gh-release@v2
         with:
-          artifacts: builds/*
-          artifactErrorsFailBuild: true
-          body: ${{ steps.changelog.outputs.changelog }}
-          tag: v${{ steps.semver.outputs.version }}
-          makeLatest: true
-          prerelease: false
-          skipIfReleaseExists: false
+          body_path: GITHUB_CHANGELOG.md
+          tag_name: ${{ steps.semver.outputs.version }}
+          make_latest: true
+          files: |
+            builds/poetry_plugin.wasm
+            builds/poetry_plugin.wasm.sha256
+            GITHUB_CHANGELOG.md
