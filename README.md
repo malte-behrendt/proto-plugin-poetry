@@ -12,9 +12,22 @@ This plugin is a Proof-of-Concept only:
 
 - Misuses the concept of Proto
   - Plugin is not isolated: requires Python to be already installed
-  - Plugin is not a single binary: [Poetry gets installed via pip](https://python-poetry.org/docs/#ci-recommendations)
+  - Plugin is not a single binary/tool: [Poetry gets installed via pip](https://python-poetry.org/docs/#ci-recommendations)
 - I'm not firm in Rust, so there may be dragons
 - I no nothing about WASM, so there will be dragons
+
+## Usage
+
+Exemplary `.prototools`:
+
+```toml
+python = "3.12.7"
+# Order matters: install Python first!
+poetry = "1.8.2"
+
+[plugins]
+poetry = "github://malte-behrendt/proto-plugin-poetry"
+```
 
 ## Manual test
 
