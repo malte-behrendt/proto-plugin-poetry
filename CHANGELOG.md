@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v0.1.1 - 2024-11-13
+#### Bug Fixes
+- **(install)** use python instead of python3 so that venv does not fail - (ac726ab) - M.Behrendt
+#### Documentation
+- **(readme)** add plugin URL - (b53fb5d) - M.Behrendt
+
+- - -
+
 ## v0.1.0 - 2024-11-03
 #### Continuous Integration
 - **(cog)** fix from latest tag - (216e9c1) - M.Behrendt
