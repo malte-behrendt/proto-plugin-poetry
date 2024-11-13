@@ -36,7 +36,7 @@ pub fn download_prebuilt(
 
 #[plugin_fn]
 pub fn unpack_archive(Json(input): Json<UnpackArchiveInput>) -> FnResult<()> {
-    let mut result = exec_command!("which", ["python3"]);
+    let mut result = exec_command!("which", ["python"]);
 
     if result.exit_code != 0 {
         return Err(plugin_err!(
@@ -53,7 +53,7 @@ pub fn unpack_archive(Json(input): Json<UnpackArchiveInput>) -> FnResult<()> {
     result = exec_command!(
         input,
         ExecCommandInput {
-            command: "python3".into(),
+            command: "python".into(),
             args: vec!["-m".into(), "venv".into(), output_path_host_str.clone()],
             ..ExecCommandInput::default()
         }
